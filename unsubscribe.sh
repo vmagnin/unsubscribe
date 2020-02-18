@@ -3,26 +3,45 @@
 # indésirables.
 # Licence GNU GPL v3
 # Vincent MAGNIN, 2020-02-15
-# Dernière modification le 2020-02-16
+# Dernière modification le 2020-02-18
 
 # Mode strict :
 set -euo pipefail
 
 # On vérifie la présence des arguments :
 if [ ${#} -eq 0 ]; then
-  echo "Usage : ${0} FICHIER"
-  echo "Se désinscrit des listes de diffusion reçues dans FICHIER."
-  echo "Exemple : ./unsubscribe.sh ~/.thunderbird/rfjzi2xb.default/Mail/pop.aliceadsl.fr/Junk"
-  exit 1
+    echo "Usage : ${0} CHEMIN"
+    echo "Se désinscrit des listes de diffusion reçues dans CHEMIN, qui peut"
+    echo "être un fichier ou un répertoire qui sera parcouru récursivement."
+    echo
+    echo "Exemples :"
+    echo "  $ ./unsubscribe.sh ~/.thunderbird/rfjzi2xb.default/Mail/pop.aliceadsl.fr/Junk"
+    echo "  $ ./unsubscribe.sh ~/.monlogicieldemail/Junk/"
+    echo
+    echo "Documentation : https://github.com/vmagnin/unsubscribe/blob/master/README.md"
+    exit 1
 else
-  readonly fichier="${1}"
+    readonly chemin="${1}"
+fi
+
+# Si le paramètre est un chemin, grep fonctionnera en mode récursif, sinon
+# il n'analysera que le fichier indiqué :
+if [ -d "${chemin}" ]; then
+    recursif="-R"
+    echo "directory"
+elif [ -f "${chemin}" ]; then
+    recursif=""
+    echo "file"
+else
+    echo "Chemin non valide !"
+    exit 2
 fi
 
 # On cherche avec grep les liens de désinscription dans les en-têtes des emails
 # -E : Extended Regular Expression
 # -A 1 : affiche une ligne de plus
 # -o : ne garde que la partie correspondant au pattern
-readonly liens="$(grep -A 1 "List-Unsubscribe: <" "${fichier}"  | grep -o -E "http[^>]+")"
+readonly liens="$(grep ${recursif} -A 1 "List-Unsubscribe: <" "${chemin}"  | grep -o -E "http[^>]+")"
 
 # Compteurs :
 n=0
