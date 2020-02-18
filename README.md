@@ -11,6 +11,7 @@ Le script ``unsubscribe.sh`` permet de se désinscrire massivement de listes de 
 ## Utilisation
 
 * Dans votre logiciel de courriel, par sécurité effacez du répertoire qui sera utilisé les éventuels courriels pouvant présenter un risque (hameçonnage...).
+* Il faut que les courriels aient été vraiment téléchargés (l'affichage du sujet du courriel ne suffit pas). Dans Thunderbird, s'ils n'ont pas été lus, il suffit de délectionner l'ensemble des courriels et avec le bouton droit de cliquer sur "Relever les messages sélectionnés".
 * Utilisez l'éventuelle fonction "compacter les dossiers" afin d'éliminer définitivement du fichier les courriels déjà "effacés" (en fait simplement effacés de l'index).
 * Repérez dans le système de fichiers le fichier ou le répertoire contenant les courriels à traiter. Vous pouvez aussi travailler sur des copies de ces fichiers.
 * Lancez le script soit en lui fournissant un fichier :
