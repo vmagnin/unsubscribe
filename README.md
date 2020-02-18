@@ -1,6 +1,6 @@
 # Désinscription massive de listes de diffusion
 
-Le script ``unsubscribe.sh`` permet de se désinscrire massivement de listes de diffusion indésirables de type publicitaire. Il se base sur le champ ``List-Unsubscribe`` défini par la RFC 2369 (juillet 1998) et généralement présent dans les courriels publicitaires. Ce champ contient des liens ``<mailto:>`` et/ou ``<http:>`` (ou ``<https:>``).
+Le script ``unsubscribe.sh`` permet de se désinscrire massivement de listes de diffusion indésirables de type publicitaire. Il se base sur le champ ``List-Unsubscribe`` défini par la RFC 2369 (juillet 1998) et généralement présent dans les courriels publicitaires français. Ce champ contient des liens ``<mailto:>`` et/ou ``<http:>`` (ou ``<https:>``).
 
 ## Installation
 
@@ -11,12 +11,17 @@ Le script ``unsubscribe.sh`` permet de se désinscrire massivement de listes de 
 ## Utilisation
 
 * Dans votre logiciel de courriel, par sécurité effacez du répertoire qui sera utilisé les éventuels courriels pouvant présenter un risque (hameçonnage...).
-* Compacter les dossiers de Thunderbird afin d'éliminer définitivement du fichier les courriels déjà "effacés" (en fait simplement effacés de l'index).
-* Repérer dans le système de fichiers le fichier correspondant au dossier contenant les courriels à traiter.
-* Lancer le script comme dans cet exemple :
+* Utilisez l'éventuelle fonction "compacter les dossiers" afin d'éliminer définitivement du fichier les courriels déjà "effacés" (en fait simplement effacés de l'index).
+* Repérez dans le système de fichiers le fichier ou le répertoire contenant les courriels à traiter. Vous pouvez aussi travailler sur des copies de ces fichiers.
+* Lancez le script soit en lui fournissant un fichier :
 
 ```bash
 $ ./unsubscribe.sh  ~/.thunderbird/rfjzi2xb.default/Mail/pop.aliceadsl.fr/Junk
+```
+* soit en lui fournissant un répertoire dont il analysera tous les fichiers, sous-répertoires inclus :
+
+```bash
+$ ./unsubscribe.sh ~/.monlogicieldemail/Junk/
 ```
 
 Le script affiche sa progression avec un point par lien (ou un zéro en cas d'échec de la connexion), puis affiche ses statistiques. Les sorties de la commande ``wget`` sont ajoutées au fichier ``unsubscribe.log`` et les fichiers téléchargés sont enregistrés dans le répertoire ``téléchargés``. L'ensemble de ces fichiers vous permettra d'éventuellement identifier les désinscriptions qui ont échoué.
@@ -26,7 +31,8 @@ Le script affiche sa progression avec un point par lien (ou un zéro en cas d'é
 Ce script échouera avec un petit pourcentage de pourriels car :
 
 * certains courriels contiennent un lien ``<mailto:>`` mais pas de lien ``<http:>``,  
-* certaines pages de désinscription demandent de confirmer en cliquant sur un bouton.
+* certaines pages de désinscription demandent de confirmer en cliquant sur un bouton,
+* les pourriels qui nous proviennent de l'étranger ne proposent généralement pas de champ ``List-Unsubscribe``.
 
 ## Références
 * https://www.rfc-editor.org/info/rfc2369 
