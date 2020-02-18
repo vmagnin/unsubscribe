@@ -8,9 +8,9 @@
 # Mode strict :
 set -euo pipefail
 
-# On vérifie la présence des arguments :
-if [ ${#} -eq 0 ]; then
+function usage(){
     echo "Usage : ${0} CHEMIN"
+    echo
     echo "Se désinscrit des listes de diffusion reçues dans CHEMIN, qui peut"
     echo "être un fichier ou un répertoire qui sera parcouru récursivement."
     echo
@@ -19,6 +19,11 @@ if [ ${#} -eq 0 ]; then
     echo "  $ ./unsubscribe.sh ~/.monlogicieldemail/Junk/"
     echo
     echo "Documentation : https://github.com/vmagnin/unsubscribe/blob/master/README.md"
+}
+
+# On vérifie la présence des arguments :
+if [ ${#} -eq 0 ]; then
+    usage
     exit 1
 else
     readonly chemin="${1}"
@@ -28,10 +33,10 @@ fi
 # il n'analysera que le fichier indiqué :
 if [ -d "${chemin}" ]; then
     recursif="-R"
-    echo "directory"
+    echo "Analyse récursive du répertoire :"
 elif [ -f "${chemin}" ]; then
     recursif=""
-    echo "file"
+    echo "Analyse du ficher fourni :"
 else
     echo "Chemin non valide !"
     exit 2
