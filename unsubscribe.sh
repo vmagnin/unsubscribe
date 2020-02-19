@@ -32,10 +32,10 @@ fi
 # Si le paramètre est un chemin, grep fonctionnera en mode récursif, sinon
 # il n'analysera que le fichier indiqué :
 if [ -d "${chemin}" ]; then
-    recursif="-R"
+    readonly recursif="-R"
     echo "Analyse récursive du répertoire :"
 elif [ -f "${chemin}" ]; then
-    recursif=""
+    readonly recursif=""
     echo "Analyse du ficher fourni :"
 else
     echo "Chemin non valide !"
