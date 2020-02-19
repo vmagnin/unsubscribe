@@ -1,9 +1,8 @@
 #! /bin/bash
-# Ce script permet de se désinscrire massivement de listes de diffusion
-# indésirables.
+# Pour se désinscrire massivement de listes de diffusion indésirables.
 # Licence GNU GPL v3
 # Vincent MAGNIN, 2020-02-15
-# Dernière modification le 2020-02-18
+# Dernière modification le 2020-02-19
 
 # Mode strict :
 set -euo pipefail
