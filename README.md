@@ -1,6 +1,6 @@
 # Désinscription massive de listes de diffusion
 
-Le script ``unsubscribe.sh`` permet de se désinscrire massivement de listes de diffusion indésirables de type publicitaire. Il se base sur le champ ``List-Unsubscribe`` défini par la RFC 2369 (juillet 1998) et généralement présent dans les courriels publicitaires français. Ce champ contient des liens ``<mailto:>`` et/ou ``<http:>`` (ou ``<https:>``).
+Le script ``unsubscribe.sh`` permet de se désinscrire massivement de listes de diffusion indésirables de type publicitaire. Il se base sur le champ ``List-Unsubscribe`` défini par la RFC 2369 (juillet 1998) et généralement présent dans les courriels publicitaires français. Ce champ contient des liens ``<mailto:>`` et/ou ``<http:>`` (ou ``<https:>``). Certains pourriels utilisent à la place le champ non standard ``X-List-Unsubscribe`` : il sera également détecté par notre script.
 
 ## Installation
 
