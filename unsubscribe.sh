@@ -20,7 +20,7 @@ function usage(){
     echo "Documentation : https://github.com/vmagnin/unsubscribe/blob/master/README.md"
 }
 
-# On vérifie la présence des arguments :
+# On vérifie la présence des arguments et on affiche l'usage en cas d'oubli :
 if [ ${#} -eq 0 ]; then
     usage
     exit 1
@@ -28,7 +28,7 @@ else
     readonly chemin="${1}"
 fi
 
-# Si le paramètre est un chemin, grep fonctionnera en mode récursif, sinon
+# Si le paramètre est un répertoire, grep fonctionnera en mode récursif, sinon
 # il n'analysera que le fichier indiqué :
 if [ -d "${chemin}" ]; then
     readonly recursif="-R"
@@ -41,10 +41,11 @@ else
     exit 2
 fi
 
-# On cherche avec grep les liens de désinscription dans les en-têtes des emails
-# -E : Extended Regular Expression
+# On cherche avec grep les liens de désinscription dans l'éventuel champ List-Unsubscribe
+# dans les en-têtes des emails.
 # -A 1 : affiche une ligne de plus
 # -o : ne garde que la partie correspondant au pattern
+# -E : Extended Regular Expression
 readonly liens="$(grep ${recursif} -A 1 "List-Unsubscribe: <" "${chemin}"  | grep -o -E "http[^>]+")"
 
 # Compteurs :
