@@ -2,7 +2,7 @@
 # Pour se désinscrire massivement de listes de diffusion indésirables.
 # Licence GNU GPL v3
 # Vincent MAGNIN, 2020-02-15
-# Dernière modification le 2020-02-19
+# Dernière modification le 2020-02-20
 
 # Mode strict :
 set -euo pipefail
@@ -46,7 +46,7 @@ fi
 # -A 1 : affiche une ligne de plus
 # -o : ne garde que la partie correspondant au pattern
 # -E : Extended Regular Expression
-readonly liens="$(grep ${recursif} -A 1 "List-Unsubscribe: <" "${chemin}"  | grep -o -E "http[^>]+")"
+readonly liens="$(grep ${recursif} -A 1 'List-Unsubscribe: <' "${chemin}"  | grep -o -E 'http[^>]+')"
 
 # Compteurs :
 n=0
