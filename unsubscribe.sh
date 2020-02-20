@@ -8,10 +8,13 @@
 set -euo pipefail
 
 function usage(){
-    echo "Usage : ${0} CHEMIN"
+    echo "Usage : ${0} [OPTION] CHEMIN"
     echo
     echo "Se désinscrit des listes de diffusion reçues dans CHEMIN, qui peut"
     echo "être un fichier ou un répertoire qui sera parcouru récursivement."
+    echo
+    echo "Options :"
+    echo "  -h       afficher l'aide"
     echo
     echo "Exemples :"
     echo "  $ ./unsubscribe.sh ~/.thunderbird/rfjzi2xb.default/Mail/pop.aliceadsl.fr/Junk"
@@ -20,11 +23,20 @@ function usage(){
     echo "Documentation : https://github.com/vmagnin/unsubscribe/blob/master/README.md"
 }
 
+# On analyse les options de la ligne de commandes :
+while getopts h option ; do
+    case "$option" in
+        h) usage ; exit 0 ;;           # Afficher l'aide
+        ?) echo ; usage ; exit 1 ;;    # Options inconnues
+    esac
+done
+
 # On vérifie la présence des arguments et on affiche l'usage en cas d'oubli :
 if [ ${#} -eq 0 ]; then
     usage
     exit 1
 else
+    # On récupère le chemin fourni en ligne de commandes :
     readonly chemin="${1}"
 fi
 
