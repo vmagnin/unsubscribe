@@ -8,13 +8,14 @@
 set -euo pipefail
 
 function usage(){
-    echo "Usage : ${0} [OPTION] CHEMIN"
+    echo "Usage : ${0} [OPTION]... CHEMIN"
     echo
     echo "Se désinscrit des listes de diffusion reçues dans CHEMIN, qui peut"
     echo "être un fichier ou un répertoire qui sera parcouru récursivement."
     echo
     echo "Options :"
     echo "  -h       afficher l'aide"
+    echo "  -n       ne pas se désinscrire (simuler)"
     echo
     echo "Exemples :"
     echo "  $ ./unsubscribe.sh ~/.thunderbird/rfjzi2xb.default/Mail/pop.aliceadsl.fr/Junk"
@@ -23,15 +24,20 @@ function usage(){
     echo "Documentation : https://github.com/vmagnin/unsubscribe/blob/master/README.md"
 }
 
+ne_rien_faire=false
+
 # On analyse les options de la ligne de commandes :
-while getopts h option ; do
+while getopts hn option ; do
     case "$option" in
         h) usage ; exit 0 ;;           # Afficher l'aide
+        n) ne_rien_faire=true ;;       # Ne pas télécharger
         ?) echo ; usage ; exit 1 ;;    # Options inconnues
     esac
 done
-
-# On vérifie la présence des arguments et on affiche l'usage en cas d'oubli :
+# On saute les arguments de type option :
+shift $((OPTIND - 1))
+# On vérifie la présence des autres arguments 
+# et on affiche l'usage en cas d'oubli :
 if [ ${#} -eq 0 ]; then
     usage
     exit 1
@@ -68,20 +74,24 @@ echecs=0
 for un_lien in ${liens}; do
     n=$((n + 1))
     
-    # On se connecte avec wget et si ça échoue, on incrémente le compteur
-    # d'échecs. 
-    # -a : ajouter ("append") la sortie de wget au fichier de log.
-    # -t : nombre d'essais ("tries").
-    # -T : délai d'attente ("timeout").
-    # -P : répertoire où seront téléchargés les fichiers.
-    if ! wget -a unsubscribe.log -P téléchargés -t 2 -T 10 "${un_lien}"
-    then
-        echecs=$((echecs + 1))
-        # On affiche un zéro pour marquer la progression...
-        echo -n "0"
+    if ${ne_rien_faire}  ; then
+        echo "${un_lien}"
     else
-        # On affiche des points à la suite pour marquer la progression...
-        echo -n "."
+        # On se connecte avec wget et si ça échoue, on incrémente le compteur
+        # d'échecs. 
+        # -a : ajouter ("append") la sortie de wget au fichier de log.
+        # -t : nombre d'essais ("tries").
+        # -T : délai d'attente ("timeout").
+        # -P : répertoire où seront téléchargés les fichiers.
+        if ! wget -a unsubscribe.log -P téléchargés -t 2 -T 10 "${un_lien}"
+        then
+            echecs=$((echecs + 1))
+            # On affiche un zéro pour marquer la progression...
+            echo -n "0"
+        else
+            # On affiche des points à la suite pour marquer la progression...
+            echo -n "."
+        fi
     fi
 done
 
