@@ -2,7 +2,7 @@
 # Pour se désinscrire massivement de listes de diffusion indésirables.
 # Licence GNU GPL v3
 # Vincent MAGNIN, 2020-02-15
-# Dernière modification le 2020-02-20
+# Dernière modification le 2020-02-21
 
 # Mode strict :
 set -euo pipefail
@@ -50,21 +50,23 @@ fi
 # il n'analysera que le fichier indiqué :
 if [ -d "${chemin}" ]; then
     readonly recursif="-R"
-    echo "Analyse récursive du répertoire :"
+    echo "Analyse récursive du répertoire... Soyez patients... "
 elif [ -f "${chemin}" ]; then
     readonly recursif=""
-    echo "Analyse du ficher fourni :"
+    echo "Analyse du fichier fourni... Soyez patients... "
 else
     echo "Chemin non valide !"
     exit 2
 fi
 
-# On cherche avec grep les liens de désinscription dans l'éventuel champ List-Unsubscribe
-# dans les en-têtes des emails.
-# -A 1 : affiche une ligne de plus
-# -o : ne garde que la partie correspondant au pattern
-# -E : Extended Regular Expression
-readonly liens="$(grep ${recursif} -A 1 'List-Unsubscribe: <' "${chemin}"  | grep -o -E 'http[^>]+')"
+# On cherche avec grep les liens http(s) de désinscription dans les champs 
+# List-Unsubscribe (ou X-List-Unsubscribe) des en-têtes des courriels.
+# Options de grep :
+# -z : remplace les retours à la ligne par des octets nuls
+# -P : Perl-compatible regular expressions (PCREs)
+# -o : ne garde que la partie correspondant au motif
+# La commande tr fait l'opération inverse.
+readonly liens="$(grep ${recursif} -zPo 'List-Unsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?://[^>]+?>' "${chemin}" | tr '\000' '\n' | grep -Po 'http[s]?://[^>]+')"
 
 # Compteurs :
 n=0
@@ -99,6 +101,6 @@ echo
 echo "Statistiques :"
 echo "* Nombre de liens : ${n}"
 echo "* Echecs de connexion : ${echecs}"
-echo "Dans le répértoire 'téléchargés' :"
+echo "Dans le répertoire 'téléchargés' :"
 echo "* Nombre de ' bien ' : $(grep -iR ' bien ' | wc -l)"
 echo "* Nombre de ' success' : $(grep -iR ' success' | wc -l)"
