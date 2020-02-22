@@ -2,7 +2,7 @@
 # Pour se désinscrire massivement de listes de diffusion indésirables.
 # Licence GNU GPL v3
 # Vincent MAGNIN, 2020-02-15
-# Dernière modification le 2020-02-21
+# Dernière modification le 2020-02-22
 
 # Mode strict :
 set -euo pipefail
@@ -12,6 +12,8 @@ function usage(){
     echo
     echo "Se désinscrit des listes de diffusion reçues dans CHEMIN, qui peut"
     echo "être un fichier ou un répertoire qui sera parcouru récursivement."
+    echo "Collecte également dans courriels.log les adresses e-mail quand la" 
+    echo "désinscription n'est possible que par ce moyen."
     echo
     echo "Options :"
     echo "  -h       afficher l'aide"
@@ -66,7 +68,7 @@ fi
 # -P : Perl-compatible regular expressions (PCREs)
 # -o : ne garde que la partie correspondant au motif
 # La commande tr fait l'opération inverse.
-# L'expression régulière est expliquée dans le fichier README.md
+# L'expression régulière est expliquée dans le fichier README.md :
 readonly liens="$(grep ${recursif} -zPo 'List-Unsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?://[^>]+?>' "${chemin}" | tr '\000' '\n' | grep -Po 'http[s]?://[^>]+')"
 
 # Compteurs :
@@ -98,6 +100,12 @@ for un_lien in ${liens}; do
     fi
 done
 
+# Les champs comportant uniquement une adresse e-mail sont simplement collectés
+# dans le fichier courriels.log. C'est à l'utilisateur d'exploiter ensuite 
+# ces adresses. L'expression régulière est expliquée dans le fichier README.md :
+grep -oPz 'List-Unsubscribe:\s+?<mailto:[^>]+?>[^,]' "${chemin}" | tr '\000' '\n' | grep -oP '(?<=mailto:)[^>]+' > courriels.log
+
+# La commande wc -l  permet d'afficher le nombre de lignes d'un fichier.
 echo
 echo "Statistiques :"
 echo "* Nombre de liens : ${n}"
@@ -106,3 +114,4 @@ echo "Dans le répertoire 'téléchargés' :"
 echo "* Nombre de ' bien ' : $(grep -iR ' bien ' téléchargés/ | wc -l)"
 echo "* Nombre de ' success' : $(grep -iR ' success' téléchargés/ | wc -l)"
 echo "* Nombre d'erreurs : $(grep -iRE 'err(eu|o)r' téléchargés/ | wc -l)"
+echo "Adresses e-mails collectées dans courriels.log : $(cat courriels.log | wc -l)"

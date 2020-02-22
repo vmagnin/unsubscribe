@@ -35,6 +35,8 @@ L'analyse par `grep` des fichiers peut prendre plusieurs dizaines de secondes po
 
 Les sorties de la commande ``wget`` sont ajoutées au fichier ``unsubscribe.log`` et les fichiers téléchargés sont enregistrés dans le répertoire ``téléchargés``. L'ensemble de ces fichiers vous permettra d'éventuellement identifier les désinscriptions qui ont échoué. Le script vous laisse la responsabilité d'y faire éventuellement le ménage.
 
+Les champs comportant uniquement une adresse e-mail sont ensuite détectés et les adresses e-mail sont simplement collectées dans le fichier `courriels.log`. C'est à l'utilisateur d'exploiter ensuite ces adresses. Attention, un envoi massif de courriels de désinscription pourrait être mal interprété par votre fournisseur d'accès et vous risqueriez d'être filtré automatiquement comme *spammer*.
+
 Enfin, le script affiche des statistiques vous permettant d'estimer le taux de succès de l'opération. 
 
 ### Options du script
@@ -65,7 +67,8 @@ Ce script échouera avec un petit pourcentage de pourriels car :
 La capture des liens est faite par la commande suivante :
 
 ```bash
-grep ${recursif} -zPo 'List-Unsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?://[^>]+?>' "${chemin}" | tr '\000' '\n' | grep -Po 'http[s]?://[^>]+'
+grep ${recursif} -zPo 'List-Unsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?://[^>]+?>' "${chemin}" 
+| tr '\000' '\n' | grep -Po 'http[s]?://[^>]+'
 ```
 
 * Le premier `grep` est chargé de détecter les champs `List-Unsubscribe`. Il n'est pas spécifié qu'ils doivent être en début de ligne, ce qui permet de détecter aussi les champs non standards `X-List-Unsubscribe`.
@@ -78,7 +81,18 @@ grep ${recursif} -zPo 'List-Unsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?:/
 * S'il y a un lien `<mailto:>` suivi d'un lien `<http:>`, il y aura une virgule suivi d'au moins un caractère d'espacement entre eux : parfois une espace si tout est sur la même ligne, ou un retour à la ligne et une espace ou une tabulation.
 * Le `[s]?` (un s ou pas) permet de capturer aussi bien les liens `<http:>` que `<https:>`.
 * La commande `tr` remplace les octets nuls par des retours à la ligne afin que le `grep` final puisse travailler ligne par ligne (pas de `-z` pour celui-là). 
- 
+
+## Analyse de l'expression régulière pour les liens mailto:
+
+```bash
+grep -oPz 'List-Unsubscribe:\s+?<mailto:[^>]+?>[^,]' "${chemin}" 
+| tr '\000' '\n' | grep -oP '(?<=mailto:)[^>]+' > courriels.log
+```
+
+* `[^,]` : Si le lien `<mailto:>` n'est pas suivi d'une virgule, il n'y a pas de lien `<http:>`.
+* Dans le second `grep`, `(?<=mailto:)[^>]+` signifie que l'on cherche des caractères qui ne sont pas des chevrons fermants après un `mailto:`, qui lui ne sera pas capturé *(motif rétrospectif positif).*
+
+
 -----
 
 Vincent MAGNIN, premier commit : 2020-02-16
