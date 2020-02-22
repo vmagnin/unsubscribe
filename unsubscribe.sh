@@ -66,6 +66,7 @@ fi
 # -P : Perl-compatible regular expressions (PCREs)
 # -o : ne garde que la partie correspondant au motif
 # La commande tr fait l'opération inverse.
+# L'expression régulière est expliquée dans le fichier README.md
 readonly liens="$(grep ${recursif} -zPo 'List-Unsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?://[^>]+?>' "${chemin}" | tr '\000' '\n' | grep -Po 'http[s]?://[^>]+')"
 
 # Compteurs :
