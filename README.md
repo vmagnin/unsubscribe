@@ -35,7 +35,7 @@ L'analyse par `grep` des fichiers peut prendre plusieurs dizaines de secondes po
 
 Les sorties de la commande ``wget`` sont ajoutées au fichier ``unsubscribe.log`` et les fichiers téléchargés sont enregistrés dans le répertoire ``téléchargés``. L'ensemble de ces fichiers vous permettra d'éventuellement identifier les désinscriptions qui ont échoué. Le script vous laisse la responsabilité d'y faire éventuellement le ménage.
 
-Les champs comportant uniquement une adresse e-mail sont ensuite détectés et les adresses e-mail sont simplement collectées dans le fichier `courriels.log`. C'est à l'utilisateur d'exploiter ensuite ces adresses. Attention, un envoi massif de courriels de désinscription pourrait être mal interprété par votre fournisseur d'accès et vous risqueriez d'être filtré automatiquement comme *spammer*. Enfin, certaines adresses e-mail peuvent être suivies d'une chaîne du type ``?subject=blablabla` qu'il appartiendra à l'utilisateur d'interpréter.
+Les champs comportant uniquement une adresse e-mail sont ensuite détectés et les adresses e-mail sont simplement collectées dans le fichier `courriels.log`. C'est à l'utilisateur d'exploiter ensuite ces adresses. Attention, un envoi massif de courriels de désinscription pourrait être mal interprété par votre fournisseur d'accès et vous risqueriez d'être filtré automatiquement comme *spammer*. Enfin, certaines adresses e-mail peuvent être suivies d'une chaîne du type `?subject=blablabla` qu'il appartiendra à l'utilisateur d'interpréter.
 
 Enfin, le script affiche des statistiques vous permettant d'estimer le taux de succès de l'opération. 
 
