@@ -107,6 +107,7 @@ set +e
 # ces adresses. L'expression régulière est expliquée dans le fichier README.md :
 grep -oPz 'List-Unsubscribe:\s+?<mailto:[^>]+?>[^,]' "${chemin}" | tr '\000' '\n' | grep -oP '(?<=mailto:)[^>]+' > courriels.log
 
+set -e
 # La commande wc -l  permet d'afficher le nombre de lignes d'un fichier.
 echo
 echo "Statistiques :"
