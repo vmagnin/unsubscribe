@@ -2,7 +2,7 @@
 # Pour se désinscrire massivement de listes de diffusion indésirables.
 # Licence GNU GPL v3
 # Vincent MAGNIN, 2020-02-15
-# Dernière modification le 2020-02-22
+# Dernière modification le 2020-03-07
 
 # Mode strict :
 set -euo pipefail
@@ -100,6 +100,8 @@ for un_lien in ${liens}; do
     fi
 done
 
+# Pour afficher les statistiques même si la ligne suivante échoue :
+set +e
 # Les champs comportant uniquement une adresse e-mail sont simplement collectés
 # dans le fichier courriels.log. C'est à l'utilisateur d'exploiter ensuite 
 # ces adresses. L'expression régulière est expliquée dans le fichier README.md :
