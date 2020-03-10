@@ -5,7 +5,7 @@ Le script ``unsubscribe.sh`` permet de se désinscrire massivement de listes de 
 ## Installation
 
 * Ce script a été testé avec le logiciel de courriel Mozilla Thunderbird mais devrait fonctionner avec tout logiciel conservant les courriels dans des fichiers texte.
-* Ce script ``bash`` est essentiellement basé sur les commandes ``grep`` (il a été testé avec GNU grep 3.3) et ``wget``. Il devrait donc fonctionner sur n'importe quel système de type UNIX, y compris MSYS2 sous Windows. Avec un autre shell, quelques modifications mineures devraient suffire : en particulier, l'option ``-o pipefail`` peut être retirée sans problème.
+* Ce script ``bash`` est essentiellement basé sur les commandes ``grep`` et ``wget``, qu'il vous appartient donc d'éventuellement installer. Il devrait fonctionner sur n'importe quel système de type UNIX, y compris MSYS2 sous Windows. Mais les commandes du type ``grep`` existant en de nombreuses variantes, en cas de problème essayez d'installer de préférence GNU grep (il a été testé avec la version 3.3). Enfin, avec un autre shell, quelques modifications mineures devraient suffire : en particulier, l'option ``-o pipefail`` peut être retirée sans problème.
 * Clonez le dépôt GitHub ou téléchargez et extrayez le zip dans un répertoire.
 
 ## Utilisation
