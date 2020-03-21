@@ -52,6 +52,8 @@ Ce script échouera avec un petit pourcentage de pourriels car :
 * certaines pages de désinscription demandent de confirmer en cliquant sur un bouton,
 * les pourriels qui nous proviennent de l'étranger ne proposent pas toujours de champ ``List-Unsubscribe``, ou parfois les caractères contenus dans le champ sont encodés d'une façon qui empêche le script de trouver le lien.
 
+Même si dans un premier temps le nombre de courriels reçus devrait être divisé au moins par trois, le traitement devra être probablement renouvelé régulièrement. Votre adresse e-mail étant en possession des spammeurs, vous risquez d'être inclus dans de nouvelles campagnes publicitaires. Mais je n'ai pas encore assez de recul pour en dire plus avec certitude.
+
 ## Références
 * https://www.rfc-editor.org/info/rfc2369 
 * https://litmus.com/blog/the-ultimate-guide-to-list-unsubscribe
