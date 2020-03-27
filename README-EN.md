@@ -1,3 +1,5 @@
+[La version française peut-être trouvée ici](README.md)
+
 # Mass unsubscription of mailing lists
 
 The `unsubscribe.sh` script allows the mass unsubscription from unwanted mailing lists. It is based on the `List-Unsubscribe` field defined by RFC 2369 (July 1998) and generally present in French advertising emails. This field contains links `<mailto:>` and/or `<http:>` (or `<https:>`). This script also detects non-standard `X-List-Unsubscribe` fields.
@@ -20,18 +22,18 @@ The `unsubscribe.sh` script allows the mass unsubscription from unwanted mailing
 
 ### Execute
 
-* Run the script either by providing it with a :
+* Run the script either by providing a file directly :
 
 ``` bash
 ./unsubscribe.sh ~/.thunderbird/rfjzi2xb.default/Mail/pop.aliceadsl.fr/Junk
 ```
-* either by providing it with a directory from which it will scan all the files, including subdirectories :
+* either by providing a directory from which the script will scan all the files, including subdirectories :
 
 ``` bash
 $ ./unsubscribe.sh ~/.myemailsoftware/Junk/
 ```
 
-The `grep` analysis of files can take some time (several tens of seconds) for a thousand spam messages. Then, the script displays its progress of unsubscriptions with a dot per link or a zero if the connection fails (for example, the link may no longer be valid if it is several months old).
+The `grep` analysis of files can take some time (several tens of seconds) for a thousand spam messages. After the analysis, the script displays the progress of unsubscriptions with a dot (".") per link or a zero ("0") if the connection fails (for instance, the link may no longer be valid if it is several months old).
 
 The output of the `wget` command is added to the `unsubscribe.log` file and the downloaded files are saved in the `downloaded` directory. All these files will allow you to eventually identify unsubscriptions that have failed. The script leaves it up to you to clean it up if necessary.
 
@@ -42,7 +44,7 @@ Finally, the script displays statistics allowing you to estimate the success rat
 ### Script options
 
 * `-h` displays help.
-* `-n` allows you to not unsubscribe. The script displays the links found but `wget` is not called.
+* `-n` dry run. Allows you to not unsubscribe. The script displays the links found but `wget` is not called.
 
 ## Limitations
 
@@ -50,15 +52,15 @@ This script will fail with a small percentage of spam because :
 
 * some emails contain a `<mailto:>` link but no `<http:>` link,  
 * some unsubscribe pages ask you to confirm by clicking a button,
-* Spam that comes to us from abroad does not always offer a List-Unsubscribe field, or sometimes the characters in the field are encoded in a way that prevents the script from finding the link.
+* Spam that comes from abroad does not always offer a `List-Unsubscribe` field, or sometimes the characters in the field are encoded in a way that prevents the script from finding the link.
 
-Even if the number of emails received should be divided by at least three at first, the treatment will probably have to be renewed regularly. Since your e-mail address is in the possession of spammers, you risk being included in new advertising campaigns. But I don't yet have enough hindsight to say more for sure.
+Even if the number of emails received should be divided by at least three at first, the treatment will probably have to be renewed regularly. Since your e-mail address is in the possession of spammers, you risk being included in new advertising campaigns.
 
 ## References
-* https://www.rfc-editor.org/info/rfc2369 
-* https://litmus.com/blog/the-ultimate-guide-to-list-unsubscribe
-* https://www.gnu.org/software/wget/ 
-* The syntax of this script has been checked by the shellcheck utility: https://www.shellcheck.net/
+* [rfc2369](https://www.rfc-editor.org/info/rfc2369)
+* [the-ultimate-guide-to-list-unsubscribe](https://litmus.com/blog/the-ultimate-guide-to-list-unsubscribe)
+* [wget](https://www.gnu.org/software/wget/)
+* The syntax of this script has been checked by [the shellcheck utility](https://www.shellcheck.net/). 
 * Bernard Desgraupes, *Introduction to regular expressions; with awk, Java, Perl, PHP, Tcl...* (2nd edition), Paris: Vuibert, 2008, ISBN 978-2-7117-4867-9.
  
 
@@ -73,8 +75,8 @@ grep ${recursive} -zPo 'List-Unsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?:
 | ? tr'000 ? grep -Po'http[s]?://[^>]+'
 ```
 
-* The first `grep` is responsible for detecting the `List-Unsubscribe` fields. They are not required to be at the beginning of the line, it allows detection of non-standard `X-List-Unsubscribe' fields.
-* The `-z` option replaces line breaks in the file with null bytes, which allows to get around the fact that `grep` normally looks for patterns in every line of a file, whereas `List-Unsubscribe` fields usually take up one to three lines.
+* The first `grep` is responsible for detecting the `List-Unsubscribe` fields. They are not required to be at the beginning of the line, this allows detection of non-standard `X-List-Unsubscribe` fields.
+* The `-z` option replaces line breaks in the file with null bytes, which allows to get around the fact that `grep` normally looks for patterns in every line of a file, whereas `List-Unsubscribe` fields usually take up between one to three lines.
 * The `-P` option stands for *Perl-compatible regular expressions (PCREs)*, which is the most complex type of regular expression handled by the `grep` command.
 * The `-o` option keeps only the portion corresponding to the detected pattern, instead of the entire line.
 * `\s` designates a space character, in particular space, tab, and linebreak, which are the three characters that can be encountered at that location. The `+` indicates that there is at least one character. The `?` indicates that this is a minimal quantizer: we reverse the regular expression engine's greed to capture as few characters as possible to the next part of the expression.
@@ -99,5 +101,4 @@ grep -oPz 'List-Unsubscribe:\s+?<mailto:[^>]+?>[^,]' "${path}"
 
 Vincent MAGNIN, first commit: 2020-02-16
 
-
-
+English translation made by [trolologuy](https://github.com/trolologuy)
