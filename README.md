@@ -1,3 +1,5 @@
+[English version can be found here](README-EN.md)
+
 # Désinscription massive de listes de diffusion
 
 Le script ``unsubscribe.sh`` permet de se désinscrire massivement de listes de diffusion indésirables de type publicitaire. Il se base sur le champ ``List-Unsubscribe`` défini par la RFC 2369 (juillet 1998) et généralement présent dans les courriels publicitaires français. Ce champ contient des liens ``<mailto:>`` et/ou ``<http:>`` (ou ``<https:>``). Notre script détecte également les champs non standards ``X-List-Unsubscribe``.
@@ -55,10 +57,10 @@ Ce script échouera avec un petit pourcentage de pourriels car :
 Même si dans un premier temps le nombre de courriels reçus devrait être divisé au moins par trois, le traitement devra être probablement renouvelé régulièrement. Votre adresse e-mail étant en possession des spammeurs, vous risquez d'être inclus dans de nouvelles campagnes publicitaires. Mais je n'ai pas encore assez de recul pour en dire plus avec certitude.
 
 ## Références
-* https://www.rfc-editor.org/info/rfc2369 
-* https://litmus.com/blog/the-ultimate-guide-to-list-unsubscribe
-* https://www.gnu.org/software/wget/ 
-* La syntaxe de ce script a été vérifiée par l'utilitaire shellcheck : https://www.shellcheck.net/
+* [rfc2369](https://www.rfc-editor.org/info/rfc2369)
+* [the-ultimate-guide-to-list-unsubscribe](https://litmus.com/blog/the-ultimate-guide-to-list-unsubscribe)
+* [wget](https://www.gnu.org/software/wget/)
+* La syntaxe de ce script a été vérifiée par [l'utilitaire shellcheck](https://www.shellcheck.net/)
 * Bernard Desgraupes, *Introduction aux expressions régulières ; avec awk, Java, Perl, PHP, Tcl...* (2e édition), Paris : Vuibert, 2008, ISBN 978-2-7117-4867-9.
  
 
@@ -99,5 +101,6 @@ grep -oPz 'List-Unsubscribe:\s+?<mailto:[^>]+?>[^,]' "${chemin}"
 
 Vincent MAGNIN, premier commit : 2020-02-16
 
+Traduction vers l'anglais effectuée par [trolologuy](https://github.com/trolologuy)
 
 
