@@ -2,7 +2,7 @@
 
 # Mass unsubscription of mailing lists
 
-The `unsubscribe.sh` script allows the mass unsubscription from unwanted mailing lists. It is based on the `List-Unsubscribe` field defined by RFC 2369 (July 1998) and generally present in French advertising emails. This field contains links `<mailto:>` and/or `<http:>` (or `<https:>`). This script also detects non-standard `X-List-Unsubscribe` fields.
+The `unsubscribe.sh` script allows the mass unsubscription from unwanted mailing lists. It is based on the `List-Unsubscribe` field defined by RFC 2369 (July 1998), this field is generally used in French advertising emails. This field contains links `<mailto:>` and/or `<http:>` (or `<https:>`). This script also detects non-standard `X-List-Unsubscribe` fields.
 
 ## Installation
 
