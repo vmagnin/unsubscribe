@@ -2,7 +2,7 @@
 # Pour se désinscrire massivement de listes de diffusion indésirables.
 # Licence GNU GPL v3
 # Vincent MAGNIN, 2020-02-15
-# Dernière modification le 2020-03-07
+# Dernière modification le 2020-10-03
 
 # Mode strict :
 set -euo pipefail
@@ -62,14 +62,15 @@ else
 fi
 
 # On cherche avec grep les liens http(s) de désinscription dans les champs 
-# List-Unsubscribe (ou X-List-Unsubscribe) des en-têtes des courriels.
+# List-Unsubscribe (ou list-unsubscribe ou X-List-Unsubscribe) des en-têtes 
+# des courriels.
 # Options de grep :
 # -z : remplace les retours à la ligne par des octets nuls
 # -P : Perl-compatible regular expressions (PCREs)
 # -o : ne garde que la partie correspondant au motif
 # La commande tr fait l'opération inverse.
 # L'expression régulière est expliquée dans le fichier README.md :
-readonly liens="$(grep ${recursif} -zPo 'List-Unsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?://[^>]+?>' "${chemin}" | tr '\000' '\n' | grep -Po 'http[s]?://[^>]+')"
+readonly liens="$(grep ${recursif} -zPo '[Ll]ist-[Uu]nsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?://[^>]+?>' "${chemin}" | tr '\000' '\n' | grep -Po 'http[s]?://[^>]+')"
 
 # Compteurs :
 n=0
@@ -78,7 +79,7 @@ echecs=0
 # Ne pas mettre de guillemets autour de ${liens} pour que ça reste une liste !
 for un_lien in ${liens}; do
     n=$((n + 1))
-    
+
     if ${ne_rien_faire}  ; then
         echo "${un_lien}"
     else
@@ -105,7 +106,7 @@ set +e
 # Les champs comportant uniquement une adresse e-mail sont simplement collectés
 # dans le fichier courriels.log. C'est à l'utilisateur d'exploiter ensuite 
 # ces adresses. L'expression régulière est expliquée dans le fichier README.md :
-grep -oPz 'List-Unsubscribe:\s+?<mailto:[^>]+?>[^,]' "${chemin}" | tr '\000' '\n' | grep -oP '(?<=mailto:)[^>]+' > courriels.log
+grep -oPz '[Ll]ist-[Uu]nsubscribe:\s+?<mailto:[^>]+?>[^,]' "${chemin}" | tr '\000' '\n' | grep -oP '(?<=mailto:)[^>]+' > courriels.log
 
 set -e
 # La commande wc -l  permet d'afficher le nombre de lignes d'un fichier.

@@ -2,7 +2,7 @@
 
 # Mass unsubscription of mailing lists
 
-The `unsubscribe.sh` script allows the mass unsubscription from unwanted mailing lists. It is based on the `List-Unsubscribe` field defined by RFC 2369 (July 1998), this field is generally used in French advertising emails. This field contains links `<mailto:>` and/or `<http:>` (or `<https:>`). This script also detects non-standard `X-List-Unsubscribe` fields.
+The `unsubscribe.sh` script allows the mass unsubscription from unwanted mailing lists. It is based on the `List-Unsubscribe` field defined by RFC 2369 (July 1998), this field is generally used in French advertising emails. This field contains links `<mailto:>` and/or `<http:>` (or `<https:>`). This script also detects non-standard `X-List-Unsubscribe` fields and the lowercase field `list-unsubscribe`.
 
 ## Installation
 
@@ -71,11 +71,11 @@ Even if the number of emails received should be divided by at least three at fir
 The capture of links is done by the following command:
 
 ``` bash
-grep ${recursive} -zPo 'List-Unsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?://[^>]+?>' "${path}" 
+grep ${recursive} -zPo '[Ll]ist-[Uu]nsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?://[^>]+?>' "${path}" 
 | ? tr'000 ? grep -Po'http[s]?://[^>]+'
 ```
 
-* The first `grep` is responsible for detecting the `List-Unsubscribe` fields. They are not required to be at the beginning of the line, this allows detection of non-standard `X-List-Unsubscribe` fields.
+* The first `grep` is responsible for detecting the `List-Unsubscribe` fields (sometimes also written in lowercase). They are not required to be at the beginning of the line, this allows detection of non-standard `X-List-Unsubscribe` fields.
 * The `-z` option replaces line breaks in the file with null bytes, which allows to get around the fact that `grep` normally looks for patterns in every line of a file, whereas `List-Unsubscribe` fields usually take up between one to three lines.
 * The `-P` option stands for *Perl-compatible regular expressions (PCREs)*, which is the most complex type of regular expression handled by the `grep` command.
 * The `-o` option keeps only the portion corresponding to the detected pattern, instead of the entire line.
@@ -89,7 +89,7 @@ grep ${recursive} -zPo 'List-Unsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?:
 ## Regular expression parsing for mailto links:
 
 ``` bash
-grep -oPz 'List-Unsubscribe:\s+?<mailto:[^>]+?>[^,]' "${path}" 
+grep -oPz '[Ll]ist-[Uu]nsubscribe:\s+?<mailto:[^>]+?>[^,]' "${path}" 
 | ? tr '000' 'grep -oP '(?<=mailto:)[^>]+' > e-mails.log
 ```
 

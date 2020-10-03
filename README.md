@@ -2,7 +2,7 @@
 
 # Désinscription massive de listes de diffusion
 
-Le script ``unsubscribe.sh`` permet de se désinscrire massivement de listes de diffusion indésirables de type publicitaire. Il se base sur le champ ``List-Unsubscribe`` défini par la RFC 2369 (juillet 1998) et généralement présent dans les courriels publicitaires français. Ce champ contient des liens ``<mailto:>`` et/ou ``<http:>`` (ou ``<https:>``). Notre script détecte également les champs non standards ``X-List-Unsubscribe``.
+Le script ``unsubscribe.sh`` permet de se désinscrire massivement de listes de diffusion indésirables de type publicitaire. Il se base sur le champ ``List-Unsubscribe`` défini par la RFC 2369 (juillet 1998) et généralement présent dans les courriels publicitaires français. Ce champ contient des liens ``<mailto:>`` et/ou ``<http:>`` (ou ``<https:>``). Notre script détecte également les champs non standards ``X-List-Unsubscribe`` et les champs ``list-unsubscribe`` écrits en minuscules.
 
 ## Installation
 
@@ -71,11 +71,11 @@ Même si dans un premier temps le nombre de courriels reçus devrait être divis
 La capture des liens est faite par la commande suivante :
 
 ```bash
-grep ${recursif} -zPo 'List-Unsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?://[^>]+?>' "${chemin}" 
+grep ${recursif} -zPo '[Ll]ist-[Uu]nsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?://[^>]+?>' "${chemin}" 
 | tr '\000' '\n' | grep -Po 'http[s]?://[^>]+'
 ```
 
-* Le premier `grep` est chargé de détecter les champs `List-Unsubscribe`. Il n'est pas spécifié qu'ils doivent être en début de ligne, ce qui permet de détecter aussi les champs non standards `X-List-Unsubscribe`.
+* Le premier `grep` est chargé de détecter les champs `List-Unsubscribe` (parfois écrits aussi en minuscules). Il n'est pas spécifié qu'ils doivent être en début de ligne, ce qui permet de détecter aussi les champs non standards `X-List-Unsubscribe`.
 * L'option `-z` remplace les retours à la ligne du fichier par des octets nuls, ce qui va nous permettre de contourner le fait que `grep` cherche normalement les motifs dans chaque ligne d'un fichier, alors que les champs `List-Unsubscribe` occupent généralement une à trois lignes.
 * L'option `-P` signifie *Perl-compatible regular expressions (PCREs)* qui est le type d'expressions régulières le plus complexe que gère la commande `grep`.
 * L'option `-o` ne garde que la partie correspondant au motif détecté, au lieu de la ligne entière.
@@ -89,7 +89,7 @@ grep ${recursif} -zPo 'List-Unsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?:/
 ## Analyse de l'expression régulière pour les liens mailto:
 
 ```bash
-grep -oPz 'List-Unsubscribe:\s+?<mailto:[^>]+?>[^,]' "${chemin}" 
+grep -oPz '[Ll]ist-[Uu]nsubscribe:\s+?<mailto:[^>]+?>[^,]' "${chemin}" 
 | tr '\000' '\n' | grep -oP '(?<=mailto:)[^>]+' > courriels.log
 ```
 
