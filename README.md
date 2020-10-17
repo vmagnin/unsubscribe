@@ -2,7 +2,7 @@
 
 # Désinscription massive de listes de diffusion
 
-Le script ``unsubscribe.sh`` permet de se désinscrire massivement de listes de diffusion indésirables de type publicitaire. Il se base sur le champ ``List-Unsubscribe`` défini par la RFC 2369 (juillet 1998) et généralement présent dans les courriels publicitaires français. Ce champ contient des liens ``<mailto:>`` et/ou ``<http:>`` (ou ``<https:>``). Notre script détecte également les champs non standards ``X-List-Unsubscribe`` et les champs ``list-unsubscribe`` écrits en minuscules.
+Le script ``unsubscribe.sh`` permet de se désinscrire massivement de listes de diffusion indésirables de type publicitaire. Il se base sur le champ ``List-Unsubscribe`` défini par la RFC 2369 (juillet 1998) et généralement présent dans les courriels publicitaires français. Ce champ contient des liens ``<mailto:>`` et/ou ``<http:>`` (ou ``<https:>``). Notre script détecte également les champs non standards ``X-List-Unsubscribe`` et les champs ``list-unsubscribe`` écrits en minuscules, ou les liens http sans crochets <>.
 
 ## Installation
 
@@ -68,7 +68,7 @@ Même si dans un premier temps le nombre de courriels reçus devrait être divis
 
 ## Analyse de l'expression régulière pour les liens http://
 
-La capture des liens est faite par la commande suivante :
+La capture des liens est faite par les commandes suivantes :
 
 ```bash
 grep ${recursif} -zPo '[Ll]ist-[Uu]nsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?://[^>]+?>' "${chemin}" 
@@ -85,6 +85,12 @@ grep ${recursif} -zPo '[Ll]ist-[Uu]nsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http
 * S'il y a un lien `<mailto:>` suivi d'un lien `<http:>`, il y aura une virgule suivi d'au moins un caractère d'espacement entre eux : parfois une espace si tout est sur la même ligne, ou un retour à la ligne et une espace ou une tabulation.
 * Le `[s]?` (un s ou pas) permet de capturer aussi bien les liens `<http:>` que `<https:>`.
 * La commande `tr` remplace les octets nuls par des retours à la ligne afin que le `grep` final puisse travailler ligne par ligne (pas de `-z` pour celui-là). 
+
+Et pour les liens http sans <> :
+```bash
+grep ${recursif} -zPo '[Ll]ist-[Uu]nsubscribe:\s+?http[s]?://[^>]+?\.htm[l]?' "${chemin}" | tr '\000' '\n' | grep -Po 'http[s]?://[^>]+'
+```
+
 
 ## Analyse de l'expression régulière pour les liens mailto:
 

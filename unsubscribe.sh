@@ -2,7 +2,7 @@
 # Pour se désinscrire massivement de listes de diffusion indésirables.
 # Licence GNU GPL v3
 # Vincent MAGNIN, 2020-02-15
-# Dernière modification le 2020-10-03
+# Dernière modification le 2020-10-17
 
 # Mode strict :
 set -euo pipefail
@@ -70,14 +70,15 @@ fi
 # -o : ne garde que la partie correspondant au motif
 # La commande tr fait l'opération inverse.
 # L'expression régulière est expliquée dans le fichier README.md :
-readonly liens="$(grep ${recursif} -zPo '[Ll]ist-[Uu]nsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?://[^>]+?>' "${chemin}" | tr '\000' '\n' | grep -Po 'http[s]?://[^>]+')"
+readonly liens1="$(grep ${recursif} -zPo '[Ll]ist-[Uu]nsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?://[^>]+?>' "${chemin}" | tr '\000' '\n' | grep -Po 'http[s]?://[^>]+')"
+readonly liens2="$(grep ${recursif} -zPo '[Ll]ist-[Uu]nsubscribe:\s+?http[s]?://[^>]+?\.htm[l]?' "${chemin}" | tr '\000' '\n' | grep -Po 'http[s]?://[^>]+')"
 
 # Compteurs :
 n=0
 echecs=0
 
 # Ne pas mettre de guillemets autour de ${liens} pour que ça reste une liste !
-for un_lien in ${liens}; do
+for un_lien in ${liens1} ${liens2}; do
     n=$((n + 1))
 
     if ${ne_rien_faire}  ; then

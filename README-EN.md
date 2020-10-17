@@ -2,7 +2,7 @@
 
 # Mass unsubscription of mailing lists
 
-The `unsubscribe.sh` script allows the mass unsubscription from unwanted mailing lists. It is based on the `List-Unsubscribe` field defined by RFC 2369 (July 1998), this field is generally used in French advertising emails. This field contains links `<mailto:>` and/or `<http:>` (or `<https:>`). This script also detects non-standard `X-List-Unsubscribe` fields and the lowercase field `list-unsubscribe`.
+The `unsubscribe.sh` script allows the mass unsubscription from unwanted mailing lists. It is based on the `List-Unsubscribe` field defined by RFC 2369 (July 1998), this field is generally used in French advertising emails. This field contains links `<mailto:>` and/or `<http:>` (or `<https:>`). This script also detects non-standard `X-List-Unsubscribe` fields and the lowercase field `list-unsubscribe`, or http links without <>.
 
 ## Installation
 
@@ -68,11 +68,11 @@ Even if the number of emails received should be divided by at least three at fir
 
 ## Regular expression analysis for http:// links
 
-The capture of links is done by the following command:
+The capture of links is done by the following commands:
 
-``` bash
-grep ${recursive} -zPo '[Ll]ist-[Uu]nsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?://[^>]+?>' "${path}" 
-| ? tr'000 ? grep -Po'http[s]?://[^>]+'
+```bash
+grep ${recursif} -zPo '[Ll]ist-[Uu]nsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<http[s]?://[^>]+?>' "${chemin}" 
+| tr '\000' '\n' | grep -Po 'http[s]?://[^>]+'
 ```
 
 * The first `grep` is responsible for detecting the `List-Unsubscribe` fields (sometimes also written in lowercase). They are not required to be at the beginning of the line, this allows detection of non-standard `X-List-Unsubscribe` fields.
@@ -85,6 +85,12 @@ grep ${recursive} -zPo '[Ll]ist-[Uu]nsubscribe:\s+?(?:<mailto:[^>]+?>,\s*?)?<htt
 * If there is a `<mailto:>` link followed by a `<http:>` link, there will be a comma followed by at least one space character between them: sometimes a space if everything is on the same line, or a line break and a space or tab.
 * The `[s]?` (one or not s) can capture both `<http:>` and `<https:>` links.
 * The `tr` command replaces null bytes with linebreaks so that the final `grep` can work line-by-line (no `-z` for this one). 
+
+And for the http links without <>:
+```bash
+grep ${recursif} -zPo '[Ll]ist-[Uu]nsubscribe:\s+?http[s]?://[^>]+?\.htm[l]?' "${chemin}" | tr '\000' '\n' | grep -Po 'http[s]?://[^>]+'
+```
+
 
 ## Regular expression parsing for mailto links:
 
