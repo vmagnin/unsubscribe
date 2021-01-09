@@ -33,6 +33,8 @@ The `unsubscribe.sh` script allows the mass unsubscription from unwanted mailing
 $ ./unsubscribe.sh ~/.myemailsoftware/Junk/
 ```
 
+Tip: to avoid having to find the path to the Junk file each time, create a link to this file in the script directory.
+
 The `grep` analysis of files can take some time (several tens of seconds) for a thousand spam messages. After the analysis, the script displays the progress of unsubscriptions with a dot (".") per link or a zero ("0") if the connection fails (for instance, the link may no longer be valid if it is several months old).
 
 The output of the `wget` command is added to the `unsubscribe.log` file and the downloaded files are saved in the `downloaded` directory. All these files will allow you to eventually identify unsubscriptions that have failed. The script leaves it up to you to clean it up if necessary.
@@ -54,7 +56,7 @@ This script will fail with a small percentage of spam because :
 * some unsubscribe pages ask you to confirm by clicking a button,
 * Spam that comes from abroad does not always offer a `List-Unsubscribe` field, or sometimes the characters in the field are encoded in a way that prevents the script from finding the link.
 
-Even if the number of emails received should be divided by at least three at first, the treatment will probably have to be renewed regularly. Since your e-mail address is in the possession of spammers, you risk being included in new advertising campaigns.
+Even if the number of emails received should be divided by at least three at first, the treatment will have to be renewed regularly. Since your e-mail address is in the possession of spammers, you risk being included in new advertising campaigns. But you will see a clear improvement in the long term.
 
 ## References
 * [rfc2369](https://www.rfc-editor.org/info/rfc2369)

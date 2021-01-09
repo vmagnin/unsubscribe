@@ -33,6 +33,8 @@ $ ./unsubscribe.sh  ~/.thunderbird/rfjzi2xb.default/Mail/pop.aliceadsl.fr/Junk
 $ ./unsubscribe.sh ~/.monlogicieldemail/Junk/
 ```
 
+Astuce : afin de ne pas avoir à retrouver le chemin du fichier Junk à chaque fois, créez dans le répertoire du script un lien vers ce fichier.
+
 L'analyse par `grep` des fichiers peut prendre plusieurs dizaines de secondes pour un millier de pourriels. Ensuite, le script affiche sa progression dans les désinscriptions avec un point par lien ou un zéro en cas d'échec de la connexion (le lien peut par exemple ne plus être valide s'il date de plusieurs mois).
 
 Les sorties de la commande ``wget`` sont ajoutées au fichier ``unsubscribe.log`` et les fichiers téléchargés sont enregistrés dans le répertoire ``téléchargés``. L'ensemble de ces fichiers vous permettra d'éventuellement identifier les désinscriptions qui ont échoué. Le script vous laisse la responsabilité d'y faire éventuellement le ménage.
@@ -54,7 +56,7 @@ Ce script échouera avec un petit pourcentage de pourriels car :
 * certaines pages de désinscription demandent de confirmer en cliquant sur un bouton,
 * les pourriels qui nous proviennent de l'étranger ne proposent pas toujours de champ ``List-Unsubscribe``, ou parfois les caractères contenus dans le champ sont encodés d'une façon qui empêche le script de trouver le lien.
 
-Même si dans un premier temps le nombre de courriels reçus devrait être divisé au moins par trois, le traitement devra être probablement renouvelé régulièrement. Votre adresse e-mail étant en possession des spammeurs, vous risquez d'être inclus dans de nouvelles campagnes publicitaires. Mais je n'ai pas encore assez de recul pour en dire plus avec certitude.
+Même si dans un premier temps le nombre de courriels reçus devrait être divisé au moins par trois, le traitement devra être renouvelé régulièrement. Votre adresse e-mail étant en possession des spammeurs, vous risquez d'être inclus dans de nouvelles campagnes publicitaires. Mais vous constaterez une nette amélioration sur le long terme.
 
 ## Références
 * [rfc2369](https://www.rfc-editor.org/info/rfc2369)
